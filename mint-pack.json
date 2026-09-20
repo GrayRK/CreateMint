@@ -127,13 +127,6 @@
             "side": "CLIENT"
         },
         {
-            "path": "mods/Paxi-1.21.1-NeoForge-5.1.3.jar",
-            "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/CLZfFbCx/Paxi-1.21.1-NeoForge-5.1.3.jar",
-            "sha1": "7140974a26a2cd79cdc7b85ab4e834916eacc7f1",
-            "size": 102980,
-            "side": "BOTH"
-        },
-        {
             "path": "mods/PickUpNotifier-v21.1.1-1.21.1-NeoForge.jar",
             "url": "https://cdn.modrinth.com/data/ZX66K16c/versions/5NZounJc/PickUpNotifier-v21.1.1-1.21.1-NeoForge.jar",
             "sha1": "90d3fe207c95a3a5d849ebf8d70ffa885694e30f",
@@ -169,17 +162,17 @@
             "side": "BOTH"
         },
         {
+            "path": "mods/Terralith_1.21.x_v2.5.8.jar",
+            "url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/MuJMtPGQ/Terralith_1.21.x_v2.5.8.jar",
+            "sha1": "bee0cfb1a8cd4bf3d96bccea224fb45d74de9085",
+            "size": 3115385,
+            "side": "BOTH"
+        },
+        {
             "path": "mods/VisualWorkbench-v21.1.2-1.21.1-NeoForge.jar",
             "url": "https://cdn.modrinth.com/data/kfqD1JRw/versions/3646RfLS/VisualWorkbench-v21.1.2-1.21.1-NeoForge.jar",
             "sha1": "dd5b71bff42ce3f845afc9c3640d4f4f63ccdb1b",
             "size": 76670,
-            "side": "BOTH"
-        },
-        {
-            "path": "mods/YungsApi-1.21.1-NeoForge-5.1.9.jar",
-            "url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/2prKITKh/YungsApi-1.21.1-NeoForge-5.1.9.jar",
-            "sha1": "2c4b740c8ad27bbcb2a21b85b64f011b809aed91",
-            "size": 413763,
             "side": "BOTH"
         },
         {
