@@ -256,7 +256,7 @@ _version = 4
 		# CHAT 
 		# LOG 
 		# DISABLED
-		showGenerationProgress = "OVERLAY"
+		showGenerationProgress = "LOG"
 		#
 		# The max radius in chunks around the central point where world generation is allowed. 
 		# If this value is set to 0, generation bounds are disabled and the render distance will be used. 
@@ -576,7 +576,7 @@ _version = 4
 				#  
 				# Larger numbers texture more distant LODs 
 				# but increase memory usage.
-				maxTexturedLodDetailLevel = 2
+				maxTexturedLodDetailLevel = 1
 				#
 				# If true nearby and zoomed-in LODs will render with their block's 
 				# actual texture instead of a single flat color. 
@@ -620,7 +620,7 @@ _version = 4
 				# Should a noise texture be applied to LODs? 
 				# 
 				# This is done to simulate textures and make the LODs appear more detailed.
-				enableNoiseTexture = true
+				enableNoiseTexture = false
 				#
 				# Defines how far should the noise texture render before it fades away. (in blocks) 
 				# Set to 0 to disable noise from fading away
@@ -715,7 +715,7 @@ _version = 4
 				# If true LODs will fade away as you get closer to them. 
 				# If false LODs will cut off abruptly at a set distance from the camera. 
 				# This setting is affected by the vanilla overdraw prevention config.
-				ditherDhFade = true
+				ditherDhFade = false
 				#
 				# Should DH fade out before reaching the far clip plane? 
 				# This is helpful to prevent DH clouds from cutting off in the distance.
