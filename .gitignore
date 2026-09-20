@@ -27,3 +27,8 @@
 !/mods/
 /mods/*
 !/mods/reterraforged-neoforge-1.21.1.jar
+
+# Личное, не для раздачи:
+# пароль к веб-конфигу Resourceful Config и ник в триггерах чата мода Sounds
+/config/resourceful-config-web.json
+/config/sounds/chat.json
