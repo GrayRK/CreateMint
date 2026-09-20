@@ -1,0 +1,29 @@
+# Репозиторий сборки CreateMint.
+#
+# В git едет только то, что игрок должен получить одинаковым: описание сборки,
+# конфиги и дефолтные настройки. Моды качаются по ссылкам из mint-pack.json,
+# поэтому в mods/ лежит лишь то, чего нет на Modrinth.
+#
+# Всё лишнее (миры, логи, скриншоты, кэши, карта Xaero) остаётся локальным.
+
+/*
+
+!/.gitignore
+!/.gitattributes
+!/instance.json
+!/mint-pack.json
+!/MODPACK.md
+!/README.md
+
+# Настройки модов: Distant Horizons, Create, карта Xaero и прочее
+!/config/
+!/defaultconfigs/
+!/datapacks/
+
+# Клавиши, громкость, дальность прорисовки — разумные значения по умолчанию
+!/options.txt
+
+# Моды не из Modrinth: их приходится хранить целиком
+!/mods/
+/mods/*
+!/mods/reterraforged-neoforge-1.21.1.jar
