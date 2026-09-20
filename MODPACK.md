@@ -51,6 +51,7 @@ Minecraft с Create и его аддонами поверх ванильной �
 | Paxi | 5.1.3 | оба | Глобальные датапаки из `config/paxi/datapacks/` для всех миров | Способ подключения Terralith по рецепту автора RTF Unofficial |
 | YUNG's API | 5.1.9 | оба | Библиотека | Зависимость Paxi |
 | Terralith (датапак, mint-rtf) | 2.5.8 | сервер (мир) | ~95 биомов и структуры (укреплённые деревни и др.) из ванильных блоков | `config/paxi/datapacks/Terralith_1.21_v2.5.8-mint-rtf.zip` — датапак с Modrinth (sha1 `fc1349e3…`), **пересобран без `data/minecraft/worldgen/density_function/overworld/sloped_cheese.json`**. 2.6.x не подходит: требует Lithostitched ≥ 1.7.7 |
+| MineColonies (+ Structurize, BlockUI, Domum Ornamentum, Multi-Piston) | 1.1.1394-snapshot | оба | Колония с NPC-жителями: стройка по схематикам, профессии, исследования | Только снапшот-билд, релиз 1.1.1368 конфликтует с Create. Не на Modrinth — качается с CDN CurseForge. ⚠️ Тяжёлый серверный тик: ИИ жителей считается на хосте |
 | Chunky | 1.4.23 | сервер | Предгенерация мира | ⚠️ Незавершённые задачи хранит **не в мире**, а в `config/chunky/tasks/minecraft/<измерение>.properties` — в новом мире предложит `continue` старой задачи. Перед новым миром: `/chunky cancel` или удалить файл (учесть в лаунчере) |
 
 **Генерация мира: ReTerraforged Unofficial + Terralith** (решение 17.09, мир `Test-A-RTF`). Tectonic + Terralith проверен
@@ -96,7 +97,7 @@ Minecraft с Create и его аддонами поверх ванильной �
 
 | Сторона | Модов | Что это |
 |---|---|---|
-| `BOTH` | 40 | Мировая логика и контент: Create и аддоны, ReTerraForged, оверхолы мобов, Distant Horizons, библиотеки |
+| `BOTH` | 45 | Мировая логика и контент: Create и аддоны, MineColonies с зависимостями, ReTerraForged, оверхолы мобов, Distant Horizons, библиотеки |
 | `CLIENT` | 33 | Интерфейс, звук, анимации, клиентские оптимизации: Sodium, JEI, Jade, Xaero, EntityCulling и прочее |
 | `SERVER` | 1 | ProximaTunnel — публичный адрес без проброса портов |
 
@@ -123,6 +124,22 @@ Minecraft с Create и его аддонами поверх ванильной �
 ## Совместимость
 
 Статусы: ✅ проверено в игре · 🟡 в теории совместимо, нужна проверка · ⚠️ известная проблема/риск.
+
+### Create ↔ MineColonies ⚠️ (решено выбором билда)
+Create инициализирует `AllAdvancements` на регистрации `TRIGGER_TYPES` (`Create.onRegister`), а одно из его
+достижений в статическом блоке дёргает `PackageStyles.getDefaultBox()` — первый элемент списка посылок,
+который наполняется при регистрации предметов Create. С MineColonies **1.1.1368** (последний стабильный релиз)
+порядок событий регистрации смещается так, что список ещё пуст, и сервер падает:
+`java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0` в `PackageStyles.java:68`.
+- Проверено: те же зависимости (Structurize, BlockUI, Domum Ornamentum, Multi-Piston) **без** MineColonies — сервер стартует.
+- Снапшот **1.1.1394** проблемы не даёт: сервер `Done (1.656s)`, клиент доходит до меню.
+- Вывод: держать MineColonies на снапшот-ветке и **проверять сервер после каждого обновления** этого мода
+  или Create. Откат — снять MineColonies, остальные четыре мода безвредны.
+
+### MineColonies ↔ генерация мира (RTF + Terralith) 🟡
+- [ ] Колонию ставят на рельефе RTF: крутые склоны и слои пород — хватает ли ровных площадок под схематики.
+- [ ] Не конфликтуют ли постройки со структурами Terralith (укреплённые деревни).
+- MineColonies своих биомов и структур в генерацию не добавляет, Lithostitched не тянет — запрет из «Долгов» не нарушен.
 
 ### Sodium ↔ Distant Horizons ✅
 - DH рисует LOD своим рендером поверх Sodium, официально поддерживается.
@@ -233,6 +250,7 @@ Router RTF ссылается ещё на `sloped_cheese` (удалён из Ter
 | `Locating element terralith:… took 23954 ms` + `Can't keep up!` | `/locate biome` далёкого биома считает на потоке сервера. Не генерация |
 | `Can't keep up!` 2–13 с во время Chunky/облёта | Генерация + DH на всех потоках; см. «Оптимизация» |
 | `Partially Incompatible Distant Horizons mod detected: [Chunky]` | См. «DH ↔ Chunky» |
+| `[structurize] Failed loading packs from main folder path: .` | Structurize ищет папку схематик рядом с рабочим каталогом; свои схематики он всё равно находит |
 
 ---
 
@@ -267,6 +285,9 @@ Router RTF ссылается ещё на `sloped_cheese` (удалён из Ter
 - ⚠️ **Генератор RTF не потокобезопасен** (гонка при параллельной выборке рельефа) — любой мод, который
   обращается к генерации из своих потоков (DH, SwiftGen, параллельные предгенераторы), проверять
   скриптом `seamset.py` на лишние швы.
+- ⚠️ **Моды со своими реестрами могут ронять Create.** Create читает свой список посылок в статическом блоке
+  достижений; если чужой мод сдвинул порядок событий регистрации, сервер падает на старте
+  (см. «Create ↔ MineColonies»). После добавления крупного мода — обязательно поднять сервер, а не только клиент.
 - Каждый мод: записать, какие его настройки влияют на производительность (для пресетов) и где он грузит — клиент или сервер.
 
 ---
@@ -299,6 +320,17 @@ Router RTF ссылается ещё на `sloped_cheese` (удалён из Ter
 ---
 
 ## Журнал изменений
+
+### 2026-09-20 · 16 — MineColonies
+
+- Добавлены (CurseForge, sha1 в `mint-pack.json`, все `BOTH`): **MineColonies** 1.1.1394-snapshot,
+  **Structurize** 1.0.832, **BlockUI** 1.0.209, **Domum Ornamentum** 1.0.231, **Multi-Piston** 1.2.58.
+- Модов в сборке: 74 → 79.
+- ⚠️ **Стабильный релиз MineColonies 1.1.1368 ставить нельзя** — с ним сервер не стартует:
+  Create падает в `PackageStyles.getDefaultBox()` (см. «Create ↔ MineColonies»). Взят снапшот 1.1.1394.
+- Моды не на Modrinth, поэтому ссылки в манифесте ведут на CDN CurseForge
+  (`mediafilez.forgecdn.net`). Пересборку манифеста это переживает: url берётся из прошлой версии по sha1.
+- Проверено: сервер сборки поднимается (`Done (1.656s)`), клиент запускается.
 
 ### 2026-09-20 · 15 — арт сборки
 
