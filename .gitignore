@@ -13,7 +13,7 @@
 !/instance.json
 !/mint-pack.json
 !/MODPACK.md
-!/README.md
+# README в репозиторий не едет (решение 2026-10-01, до выпуска сборки)
 
 # Настройки модов: Distant Horizons, Create, карта Xaero и прочее
 !/config/
